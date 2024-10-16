@@ -69,6 +69,12 @@ export const LabelButton = styled.h3`
     font-size: 16px;
 `;
 
+export const LabelError = styled.h4`
+    text-align: center;
+    color: ${colors.red};
+    font-size: 14px;
+`;
+
 export const Button = styled.button`
   width: 80%;
   height: 45px;

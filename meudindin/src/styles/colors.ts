@@ -7,4 +7,5 @@ export const colors = {
     input: '#d9e8ff',
     button: '#0A6AFF',
     buttonHover: '#0063fc',
+    red: '#ff2424',
 }
