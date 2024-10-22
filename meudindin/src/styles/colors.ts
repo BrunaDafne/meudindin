@@ -1,11 +1,15 @@
 export const colors = {
-    background: '#EEF6F6',
+    background: '#c9f0ff',
     backgroundSecondary: '#F8FCFF',
+    backgroundCard: '#F8FCFF',
+    backgroundHover: 'aliceblue',
     text: '#222222',
     textLight: '#FFFFFF',
     textGray: '#787878',
+    textBlue: '#0A6AFF',
     input: '#d9e8ff',
     button: '#0A6AFF',
     buttonHover: '#0063fc',
+    iconBlue: '#0A6AFF',
     red: '#ff2424',
 }

@@ -1,38 +1,38 @@
 // AuthLayout.tsx
 import { Outlet, useNavigate } from "react-router-dom";
-import { ButtonLabelMenu, ButtonMenu, Container, Content, Menu, Sidebar } from "./styles";
-// import { Icon } from '@iconify/react';
+import { ButtonLabelMenu, ButtonMenu, Container, ContainerPages, Content, Menu, Sidebar } from "./styles";
+import { Icon } from '@iconify/react';
 
 const routes = [
     {
         title: 'Dashboard',
         path: '/dashboard',
-        icon: '',
+        icon: 'line-md:home-md-twotone',
     },
     {
         title: 'Transações',
         path: '/transactions',
-        icon: '',
+        icon: 'line-md:arrows-vertical',
     },
     {
         title: 'Relatórios',
         path: '/transactions',
-        icon: '',
+        icon: 'line-md:clipboard-check-twotone',
     },
     {
         title: 'Orçamentos',
         path: '/transactions',
-        icon: '',
+        icon: 'line-md:alert',
     },
     {
         title: 'Carteiras',
         path: '/transactions',
-        icon: '',
+        icon: 'ant-design:wallet-twotone',
     },
     {
         title: 'Cartões',
         path: '/transactions',
-        icon: '',
+        icon: 'ant-design:credit-card-outlined',
     },
 ];
 
@@ -44,10 +44,12 @@ export function Layout() {
       <Sidebar>
         <Menu>
             {
-                routes.map(({title, path}) => {
+                routes.map(({title, path, icon}) => {
                     return (
                         <ButtonMenu onClick={() => navigate(path)}>
-                            {/* <Icon icon={'home'} size={24} /> */}
+                            <Icon icon={icon} width="20" height="20" 
+                            style={{marginRight: 10}}
+                            />
                             <ButtonLabelMenu>{title}</ButtonLabelMenu>
                         </ButtonMenu>
                     )
@@ -56,8 +58,9 @@ export function Layout() {
         </Menu>
       </Sidebar>
       <Content>
-        {/* O `Outlet` irá renderizar as páginas internas */}
+        <ContainerPages>
         <Outlet />
+        </ContainerPages>
       </Content>
     </Container>
   );
