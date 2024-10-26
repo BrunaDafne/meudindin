@@ -1,7 +1,7 @@
 import { Container, Label } from "./styles";
 
 export enum TypeCard {
-    'success' = 'sucess',
+    'success' = 'success',
     'error' = 'error',
     'default' = 'default',
 }
@@ -15,10 +15,10 @@ interface CardValuesProps {
 export function CardValues({title, subtitle, type}: CardValuesProps) {
     return (
         <Container type={type}>
-            <Label>
+            <Label type={type}>
                 {title}
             </Label>
-            <Label>
+            <Label type={type} size="30px">
                 {subtitle}
             </Label>
         </Container>
