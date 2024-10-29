@@ -65,6 +65,21 @@ export default function Dashboard() {
         },
     ];
 
+    const valuesGraphic = [
+        {
+            categoria: 'Educação',
+            porcentagem: 25,
+        },
+        {
+            categoria: 'Alimentação',
+            porcentagem: 35,
+        },
+        {
+            categoria: 'Lazer',
+            porcentagem: 25,
+        },
+    ]
+
     return (
         <Container>
             <ContainerTitle>
@@ -90,7 +105,7 @@ export default function Dashboard() {
             <ContainerGraphicsItem>
             <SubtitlePage>Gastos do mês</SubtitlePage> 
             <ContainerSection>
-            <GraphicBar />
+            <GraphicBar data={valuesGraphic} nomeValor={['porcentagem']} indexLabelHorizontal={'categoria'} legendaVertical='Porcentagem' legendaHorizontal="Categoria"/>
             </ContainerSection>  
             </ContainerGraphicsItem>
             <ContainerGraphicsItem>

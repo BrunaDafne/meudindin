@@ -14,6 +14,7 @@ export const colors = {
     text: '#222222',
     textLight: '#FFFFFF',
     textGray: '#787878',
+    blue: '#0A6AFF',
     textBlue: '#0A6AFF',
     input: '#d9e8ff',
     button: '#0A6AFF',
