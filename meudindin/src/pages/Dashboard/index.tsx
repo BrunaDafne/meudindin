@@ -4,6 +4,7 @@ import { CardValues, TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
 import { CardBudgets } from "../../components/CardBudgets";
+import { GraphicBar } from "../../components/Graphic";
 
 export default function Dashboard() {
     const orcamentos = [
@@ -89,7 +90,7 @@ export default function Dashboard() {
             <ContainerGraphicsItem>
             <SubtitlePage>Gastos do mês</SubtitlePage> 
             <ContainerSection>
-                teste
+            <GraphicBar />
             </ContainerSection>  
             </ContainerGraphicsItem>
             <ContainerGraphicsItem>
@@ -107,11 +108,10 @@ export default function Dashboard() {
             </ContainerSection>  
             </ContainerGraphicsItem>
             </ContainerGraphics>
-
             <ContainerBudgets>
             <SubtitlePage>Orçamentos</SubtitlePage>
             <ContainerCardsBudgets>
-                {
+                {/* {
                     orcamentos.map(({title, goalValue, expenseValue}) => {
                         return (
                         <SectionCardBudgets>
@@ -119,7 +119,7 @@ export default function Dashboard() {
                         </SectionCardBudgets>
                         )
                     })
-                }
+                } */}
             </ContainerCardsBudgets>
             </ContainerBudgets>
         </Container>
