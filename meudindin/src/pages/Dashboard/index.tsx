@@ -10,58 +10,33 @@ export default function Dashboard() {
     const orcamentos = [
         {
             title: 'Educação',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            goalValue: 50,
+            expenseValue: 35,
         },
         {
             title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            goalValue: 100,
+            expenseValue: 150,
         },
         {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            title: 'Lazer',
+            goalValue: 80,
+            expenseValue: 40,
         },
         {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            title: 'Assinaturas',
+            goalValue: 70,
+            expenseValue: 50,
         },
         {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            title: 'Impostos',
+            goalValue: 80,
+            expenseValue: 15,
         },
         {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 'R$ 50,00',
-            expenseValue: 'R$ 35,00',
+            title: 'Casa',
+            goalValue: 200,
+            expenseValue: 97,
         },
     ];
 
@@ -126,7 +101,7 @@ export default function Dashboard() {
             <ContainerBudgets>
             <SubtitlePage>Orçamentos</SubtitlePage>
             <ContainerCardsBudgets>
-                {/* {
+                {
                     orcamentos.map(({title, goalValue, expenseValue}) => {
                         return (
                         <SectionCardBudgets>
@@ -134,7 +109,7 @@ export default function Dashboard() {
                         </SectionCardBudgets>
                         )
                     })
-                } */}
+                }
             </ContainerCardsBudgets>
             </ContainerBudgets>
         </Container>

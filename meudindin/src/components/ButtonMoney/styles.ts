@@ -43,14 +43,17 @@ export const ContainerTitle = styled.div<type>`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 10vw;
+  width: 55%;
   border-width: 0px;
+  background-color: aqua;
 `;
 
 export const TitleLabel = styled.p<label>`
     color: ${colors.text};
-    font-size: ${({size}) => size ? size: '16px'};
+    font-size: ${({size}) => size ? size: '14px'};
     font-weight: 600;
+    width: 20%;
+    background-color: blue;
 `;
 
 export const SubtitleLabel = styled.p<label>`

@@ -90,7 +90,7 @@ export const ContainerSection = styled.div<ContainerHeaderItem>`
 export const ContainerButtonCostNext = styled.div<ContainerHeaderItem>`
   display: flex;
   min-width: 22vw;
-  height: 35%;
+  height: 40%;
   justify-content: center;
   align-items: center;
 `;
@@ -120,7 +120,7 @@ export const SectionCardBudgets = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 13vw;
+  width: 12vw;
   height: 100%;
   //background-color: yellow;
 `;
