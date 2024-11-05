@@ -1,4 +1,4 @@
-import { ContainerButton, ContainerIcon, ContainerTitle, SubtitleLabel, TitleLabel } from "./styles";
+import { ContainerButton, ContainerIcon, ContainerTitle, SubtitleLabel, TitleLabel, ValueLabel } from "./styles";
 
 interface ButtonMoneyProps {
     title: string;
@@ -8,17 +8,17 @@ interface ButtonMoneyProps {
     action?: () => void; 
 }
 
-export function ButtonMoney({title, value, subtitle}: ButtonMoneyProps) {
+export function ButtonMoney({title, value, subtitle, action = () => {}}: ButtonMoneyProps) {
     return (
-        <ContainerButton>
-            <ContainerIcon></ContainerIcon>
+        <ContainerButton onClick={action}>
+            {/* <ContainerIcon></ContainerIcon> */}
             <ContainerTitle>
             <TitleLabel>{title}</TitleLabel>
             {subtitle &&
              <SubtitleLabel>{subtitle}</SubtitleLabel>
             }
             </ContainerTitle>
-            <TitleLabel>{value}</TitleLabel>
+            <ValueLabel>{value}</ValueLabel>
         </ContainerButton>
     );
 }

@@ -1,12 +1,15 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitlePage, TitlePage, icone } from "./styles";
 import { CardValues, TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
 import { CardBudgets } from "../../components/CardBudgets";
 import { GraphicBar } from "../../components/Graphic";
+import { useState } from "react";
+import { Modal } from "../../components/Modal";
 
 export default function Dashboard() {
+    const [isModalOpen, setModalOpen] = useState(false);
+
     const orcamentos = [
         {
             title: 'Educação',
@@ -55,6 +58,10 @@ export default function Dashboard() {
         },
     ]
 
+    function handleModal() {
+        setModalOpen((prevState) => !prevState)
+    }
+
     return (
         <Container>
             <ContainerTitle>
@@ -69,12 +76,13 @@ export default function Dashboard() {
             <CardValues title="Despesa mensal" subtitle="R$ 5000,00" type={TypeCard.error}/>
             </ContainerCardItem>
             <ContainerCardItem height="60%">
-                <Button title="Adicionar receita" type={TypeCard.success} action={() => {}}/>
+                <Button title="Adicionar receita" type={TypeCard.success} action={() => handleModal()}/>
             </ContainerCardItem>
             <ContainerCardItem height="60%">
                 <Button title="Adicionar despesa" type={TypeCard.error} action={() => {}} />
             </ContainerCardItem>
             </ContainerCard>
+            <Modal isOpen={isModalOpen} onClose={handleModal} title="Adicionar receita"/>
 
             <ContainerGraphics>
             <ContainerGraphicsItem>
@@ -94,7 +102,9 @@ export default function Dashboard() {
             <ContainerGraphicsItem>
             <SubtitlePage>Saldos</SubtitlePage>
             <ContainerSection>
-                teste
+            <ContainerButtonCostNext>
+                <ButtonMoney title='Conta Bradesco' value="R$ 3500,00"/>
+                </ContainerButtonCostNext>
             </ContainerSection>  
             </ContainerGraphicsItem>
             </ContainerGraphics>

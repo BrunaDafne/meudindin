@@ -90,7 +90,7 @@ export const ContainerSection = styled.div<ContainerHeaderItem>`
 export const ContainerButtonCostNext = styled.div<ContainerHeaderItem>`
   display: flex;
   min-width: 22vw;
-  height: 40%;
+  height: 35%;
   justify-content: center;
   align-items: center;
 `;
