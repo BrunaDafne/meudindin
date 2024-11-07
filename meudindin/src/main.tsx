@@ -8,6 +8,9 @@ import GlobalStyle from './styles/GlobalStyle.tsx';
 import { Layout } from './components/Layout/index.tsx';
 import { ProtectedRoute } from './routes/ProtectedRoute/index.tsx';
 import { Transactions } from './pages/Transactions/index.tsx';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { ptBR } from 'date-fns/locale';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +36,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GlobalStyle /> 
-    <RouterProvider router={router} />
+     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+      <GlobalStyle /> 
+      <RouterProvider router={router} />
+     </LocalizationProvider>
   </StrictMode>,
 )

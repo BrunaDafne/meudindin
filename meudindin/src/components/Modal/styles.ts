@@ -46,6 +46,34 @@ export const Input = styled.input`
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
+export const Select = styled.select`
+  width: 100%;
+  height: 6vh;
+  border-width: 0px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: ${colors.input};
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: ${colors.textGray};
+
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+  /* Estilos para remover a aparência padrão no Firefox */
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:focus {
+    border-color: ${colors.blue};
+    outline: none;
+  }
+`;
+
+export const SelectOption = styled.option`
+  color: #333;
+`;
+
 export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -100,3 +128,4 @@ export const Label = styled.p`
     margin-top: 10px;
     //margin-bottom: 5px;
 `;
+
