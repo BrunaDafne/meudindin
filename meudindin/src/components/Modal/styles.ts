@@ -96,6 +96,14 @@ export const Button = styled.button<ButtonProps>`
     &:hover {
         background-color: ${colors.buttonHover};
     }
+
+    &:disabled {
+        background-color: ${colors.buttonDisabled};
+
+       hover: {
+            background-color: ${colors.buttonDisabled}
+        }
+    }
 `;
 
 export const TitleModal = styled.p`

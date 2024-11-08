@@ -1,6 +1,9 @@
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, CloseButton, ContainerButton, Input, Label, LabelButton, ModalContent, ModalOverlay, Select, SelectOption, TitleModal } from "./styles";
 import { colors } from "../../styles/colors";
+import { useState } from "react";
+import { Snackbar } from "@mui/material";
+import { categories } from "../../constants/categories";
 
 interface ModalProps {
     isOpen: boolean;
@@ -10,19 +13,36 @@ interface ModalProps {
 
 export function Modal({ isOpen, onClose, title }: ModalProps) {
     if (!isOpen) return null;
+    const [descricao, setDescricao] = useState('');
+    const [valor, setValor] = useState<number>();
+    const [data, setData] = useState<Date | null>();
+    const [conta, setConta] = useState('');
+    const [categoria, setCategoria] = useState<number>();
+    const [openModal, setOpenModal] = useState(false);
+
+    function salvar() {
+      console.log('clicou no salvar');
+    }
 
     return (
       <ModalOverlay onClick={onClose}>
+        <Snackbar
+            open={true}
+            autoHideDuration={6000}
+            onClose={() => {}}
+            message="Teste"
+        />
         <ModalContent onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={onClose}>&times;</CloseButton>
           <TitleModal>{title}</TitleModal>
           <Label>Descrição</Label>
-          <Input placeholder="Descrição"/>
+          <Input placeholder="Descrição" onChange={(e) => setDescricao(e.target.value)}/>
           <Label>Valor</Label>
-          <Input placeholder="Digite apenas números" />
+          <Input placeholder="Digite apenas números" type="number" onChange={(e) => setValor(Number(e.target.value))}/>
           <Label>Data</Label>
           <DatePicker 
             sx={{backgroundColor: colors.input }} 
+            onChange={(e) => setData(e)}
             minDate={new Date()} format="dd/MM/yyyy"  
             slotProps={{
             openPickerButton: { color: 'info' },
@@ -53,20 +73,25 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
             <SelectOption value="opcao2">Opção 2</SelectOption>
             <SelectOption value="opcao3">Opção 3</SelectOption>
           </Select>
-          {/* <Label>Categoria</Label>
-          <Input placeholder="Categoria" /> */}
           <Label>Categoria</Label>
-          <Select>
+          <Select onChange={(e) => 
+            setCategoria(Number(e.target.value))
+            }>
             <SelectOption value="">Selecione uma opção</SelectOption>
-            <SelectOption value="opcao1">Opção 1</SelectOption>
-            <SelectOption value="opcao2">Opção 2</SelectOption>
-            <SelectOption value="opcao3">Opção 3</SelectOption>
+            {categories.map((category) => {
+              return (
+                <SelectOption value={category.id}>{category.name}</SelectOption>
+              )
+            })}
           </Select>
           <ContainerButton>
             <Button onClick={onClose}>
                 <LabelButton>Voltar</LabelButton>
             </Button>
-            <Button>
+            <Button
+            disabled={!descricao || !valor || !data || !conta || !categoria}
+            onClick={() => salvar()}
+            >
                 <LabelButton>Salvar</LabelButton>
             </Button>
           </ContainerButton>

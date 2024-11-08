@@ -18,6 +18,7 @@ export const colors = {
     textBlue: '#0A6AFF',
     input: '#d9e8ff',
     button: '#0A6AFF',
+    buttonDisabled: '#8fbbff',
     buttonHover: '#0063fc',
     iconBlue: '#0A6AFF',
     red: '#ff2424',
