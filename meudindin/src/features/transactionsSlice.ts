@@ -37,11 +37,21 @@ const transactionsSlice = createSlice({
         (transaction) => transaction.id !== action.payload
       );
     },
+    corrigirTransaction: (state) => {
+      state.transactions = state.transactions.map(
+        (transaction, index) => {
+          return {
+            ...transaction,
+            id: index + 1,
+          }
+        }
+      );
+    },
     setTransactions: (state, action: PayloadAction<Transaction[]>) => {
       state.transactions = action.payload;
     },
   },
 });
 
-export const { addTransaction, removeTransaction, setTransactions } = transactionsSlice.actions;
+export const { addTransaction, removeTransaction, setTransactions, corrigirTransaction } = transactionsSlice.actions;
 export default transactionsSlice.reducer;
