@@ -104,7 +104,7 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
           <Label>Título</Label>
           <Input value={titulo} placeholder="Título" maxLength={30} onChange={(e) => setTitulo(e.target.value)}/>
           <Label>Valor</Label>
-          <Input value={valor} placeholder="Digite apenas números" type="number" onChange={(e) => setValor(Number(e.target.value))}/>
+          <Input value={valor ? valor : ''} placeholder="Digite apenas números" type="number" onChange={(e) => setValor(Number(e.target.value))}/>
           <Label>Data</Label>
           <DatePicker 
             value={data} 
@@ -134,7 +134,7 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
             }}
           />
           <Label>Conta</Label>
-          <Select  value={conta}  onChange={(e) => 
+          <Select key={'conta'} value={conta ? conta : ''} onChange={(e) => 
             setConta(Number(e.target.value))}>
             <SelectOption value={undefined} >Selecione uma opção</SelectOption>
             {wallets.map(({title, id}) => {
@@ -144,7 +144,7 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
             })}
           </Select>
           <Label>Categoria</Label>
-          <Select value={categoria} onChange={(e) => 
+          <Select value={categoria ? categoria : ''} onChange={(e) => 
             setCategoria(Number(e.target.value))
             }>
             <SelectOption value={undefined}>Selecione uma opção</SelectOption>
