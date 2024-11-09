@@ -6,9 +6,11 @@ import { CardBudgets } from "../../components/CardBudgets";
 import { GraphicBar } from "../../components/Graphic";
 import { useState } from "react";
 import { Modal } from "../../components/Modal";
+import { ModalDespesa } from "../../components/ModalDespesa";
 
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
 
     const orcamentos = [
         {
@@ -62,6 +64,10 @@ export default function Dashboard() {
         setModalOpen((prevState) => !prevState)
     }
 
+    function handleModalDespesa() {
+        setModalDespesaOpen((prevState) => !prevState)
+    }
+
     return (
         <Container>
             <ContainerTitle>
@@ -79,10 +85,11 @@ export default function Dashboard() {
                 <Button title="Adicionar receita" type={TypeCard.success} action={() => handleModal()}/>
             </ContainerCardItem>
             <ContainerCardItem height="60%">
-                <Button title="Adicionar despesa" type={TypeCard.error} action={() => {}} />
+                <Button title="Adicionar despesa" type={TypeCard.error} action={() => handleModalDespesa()} />
             </ContainerCardItem>
             </ContainerCard>
             <Modal isOpen={isModalOpen} onClose={handleModal} title="Adicionar receita"/>
+            <ModalDespesa isOpen={isModalDespesaOpen} onClose={handleModalDespesa} title="Adicionar despesa"/>
 
             <ContainerGraphics>
             <ContainerGraphicsItem>
