@@ -1,7 +1,7 @@
 // src/features/transactionsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Transaction {
+export interface Transaction {
   id: number;
   id_user: number;
   id_type: number;
