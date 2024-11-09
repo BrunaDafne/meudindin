@@ -11,6 +11,9 @@ import { Transactions } from './pages/Transactions/index.tsx';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 import { ptBR } from 'date-fns/locale';
+import { Provider } from 'react-redux';
+import { persistor, store } from './app/store.ts';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const router = createBrowserRouter([
   {
@@ -36,9 +39,13 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
       <GlobalStyle /> 
       <RouterProvider router={router} />
      </LocalizationProvider>
+      </PersistGate>
+    </Provider>
   </StrictMode>,
 )
