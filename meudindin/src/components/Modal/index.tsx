@@ -29,6 +29,7 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
     const wallets = useSelector((state: RootState) => state.wallets.wallets);
     const [message, setMessage] = useState('');
     const [typeAlert, setTypeAlert] = useState<'success' | 'error'>('success');
+    const {transactions} = useSelector((state: RootState) => state.transactions);
     const dispatch = useDispatch<AppDispatch>();
 
     function salvar() {
@@ -48,7 +49,7 @@ export function Modal({ isOpen, onClose, title }: ModalProps) {
         }
 
         const novaTransacao: Transaction = {
-          id: 1,
+          id: transactions?.length > 0 ? transactions.length + 1 : 1,
           id_user: id,
           id_type: TypeTransactions.Receita,
           title: titulo,

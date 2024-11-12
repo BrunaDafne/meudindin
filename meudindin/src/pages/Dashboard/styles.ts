@@ -93,6 +93,7 @@ export const ContainerButtonCostNext = styled.div<ContainerHeaderItem>`
   height: 35%;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 `;
 
 export const ContainerBudgets = styled.div`

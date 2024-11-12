@@ -7,10 +7,14 @@ import { GraphicBar } from "../../components/Graphic";
 import { useState } from "react";
 import { Modal } from "../../components/Modal";
 import { ModalDespesa } from "../../components/ModalDespesa";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
+    const {receita, despesa} = useSelector((state: RootState) => state.user);
+    const {wallets} = useSelector((state: RootState) => state.wallets);
 
     const orcamentos = [
         {
@@ -76,10 +80,10 @@ export default function Dashboard() {
             </ContainerTitle>
             <ContainerCard>
             <ContainerCardItem>
-            <CardValues title="Receita mensal" subtitle="R$ 5000,00" type={TypeCard.success}/>
+            <CardValues title="Receita mensal" subtitle={`R$ ${receita}`} type={TypeCard.success}/>
             </ContainerCardItem>
             <ContainerCardItem>
-            <CardValues title="Despesa mensal" subtitle="R$ 5000,00" type={TypeCard.error}/>
+            <CardValues title="Despesa mensal" subtitle={`R$ ${despesa}`} type={TypeCard.error}/>
             </ContainerCardItem>
             <ContainerCardItem height="60%">
                 <Button title="Adicionar receita" type={TypeCard.success} action={() => handleModal()}/>
@@ -102,16 +106,22 @@ export default function Dashboard() {
             <SubtitlePage>Próximas despesas</SubtitlePage>
             <ContainerSection>
                 <ContainerButtonCostNext>
-                <ButtonMoney title='Fatura Outubro 2024' value="R$ 350,00" subtitle="Cartão Nubank - 20/08"/>
+                <ButtonMoney title='Fatura Novembro 2024' value="R$ 350,00" subtitle="Cartão Nubank - 20/08"/>
                 </ContainerButtonCostNext>
             </ContainerSection>  
             </ContainerGraphicsItem>
             <ContainerGraphicsItem>
             <SubtitlePage>Saldos</SubtitlePage>
             <ContainerSection>
-            <ContainerButtonCostNext>
-                <ButtonMoney title='Conta Bradesco' value="R$ 3500,00"/>
-                </ContainerButtonCostNext>
+                {
+                    wallets.map(({id, title, value}) => {
+                        return (
+                        <ContainerButtonCostNext key={`${id}+${title}`}>
+                            <ButtonMoney title={title} value={`R$ ${value}`} />
+                        </ContainerButtonCostNext>  
+                        )
+                    })
+                }
             </ContainerSection>  
             </ContainerGraphicsItem>
             </ContainerGraphics>

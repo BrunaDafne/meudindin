@@ -28,5 +28,10 @@ export const categories = [
     { id: 27, name: 'Saúde mental' },
     { id: 28, name: 'Imóveis' },
     { id: 29, name: 'Cuidado infantil' },
-    { id: 30, name: 'Aposentadoria' }
+    { id: 30, name: 'Aposentadoria' },
+    { id: 31, name: 'Salário' },
+    { id: 32, name: 'Bônus' },
+    { id: 33, name: 'Renda extra' },
+    { id: 34, name: 'Investimentos' },
+    { id: 35, name: 'Poupança' }
 ];

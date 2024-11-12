@@ -1,3 +1,4 @@
+import { Tooltip } from "@mui/material";
 import { ContainerButton, ContainerIcon, ContainerTitle, SubtitleLabel, TitleLabel, ValueLabel } from "./styles";
 
 interface ButtonMoneyProps {
@@ -10,6 +11,7 @@ interface ButtonMoneyProps {
 
 export function ButtonMoney({title, value, subtitle, action = () => {}}: ButtonMoneyProps) {
     return (
+        <Tooltip title={value}>
         <ContainerButton onClick={action}>
             {/* <ContainerIcon></ContainerIcon> */}
             <ContainerTitle>
@@ -18,7 +20,9 @@ export function ButtonMoney({title, value, subtitle, action = () => {}}: ButtonM
              <SubtitleLabel>{subtitle}</SubtitleLabel>
             }
             </ContainerTitle>
-            <ValueLabel>{value}</ValueLabel>
+            <ValueLabel>{value && value?.length > 9 ? `${value.slice(0, 9)}...`: value}</ValueLabel>
         </ContainerButton>
+        </Tooltip>
+       
     );
 }
