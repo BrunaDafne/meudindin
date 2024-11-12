@@ -13,7 +13,7 @@ import { RootState } from "../../app/store";
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
-    const {receita, despesa} = useSelector((state: RootState) => state.user);
+    const {receita, despesa, name} = useSelector((state: RootState) => state.user);
     const {wallets} = useSelector((state: RootState) => state.wallets);
 
     const orcamentos = [
@@ -75,7 +75,7 @@ export default function Dashboard() {
     return (
         <Container>
             <ContainerTitle>
-                <TitlePage>Bem vindo(a), Bruna Dafne</TitlePage>
+                <TitlePage>Bem vindo(a), {name}</TitlePage>
                 {/* <Icon icon={'line-md:moon-twotone-alt-loop'} width="40" height="40" style={icone}/> */}
             </ContainerTitle>
             <ContainerCard>
