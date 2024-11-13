@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { Container, TitlePage } from "./styles";
+import { Container, ContainerTable, TitlePage } from "./styles";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import { keyBy, mapValues } from "lodash";
@@ -41,53 +41,49 @@ export function Transactions() {
                 wallet: data?.id_wallet ? carteiras[data?.id_wallet] : '',
             };
         })
-    }, []);
+    }, [transactions, wallets]);
 
     const columns = useMemo<MRT_ColumnDef<TransacoesListagem>[]>(
         () => [
           {
             accessorKey: 'dateLabel',
             header: 'Data',
-            size: 150,
           },
           {
             accessorKey: 'title',
             header: 'Título',
-            size: 150,
           },
           {
             accessorKey: 'type',
             header: 'Tipo',
-            size: 150,
           },
           {
             accessorKey: 'category',
             header: 'Categoria',
-            size: 150,
           },
           {
             accessorKey: 'wallet',
             header: 'Conta',
-            size: 150,
           },
           {
             accessorKey: 'value',
             header: 'Valor',
-            size: 150,
           },
         ],
         [],
     );
 
-    const table = useMaterialReactTable({
+    const table = useMaterialReactTable<TransacoesListagem>({
         columns,
-        transacoes,
-      });
+        data: transacoes,
+    });
     
     return (
         <Container>
             <TitlePage>Transações</TitlePage>
-            {/* <MaterialReactTable table={table} /> */}
+            <ContainerTable>
+            <MaterialReactTable table={table} />
+            </ContainerTable>
         </Container>
     )
 }
