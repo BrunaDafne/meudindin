@@ -46,26 +46,33 @@ export function Transactions() {
     const columns = useMemo<MRT_ColumnDef<TransacoesListagem>[]>(
         () => [
           {
+            enableClickToCopy: true,
             accessorKey: 'dateLabel',
             header: 'Data',
+            size: 50,
           },
           {
+            enableClickToCopy: true,
             accessorKey: 'title',
             header: 'Título',
           },
           {
+            enableClickToCopy: true,
             accessorKey: 'type',
             header: 'Tipo',
           },
           {
+            enableClickToCopy: true,
             accessorKey: 'category',
             header: 'Categoria',
           },
           {
+            enableClickToCopy: true,
             accessorKey: 'wallet',
             header: 'Conta',
           },
           {
+            enableClickToCopy: true,
             accessorKey: 'value',
             header: 'Valor',
           },
@@ -76,13 +83,35 @@ export function Transactions() {
     const table = useMaterialReactTable<TransacoesListagem>({
         columns,
         data: transacoes,
+        muiSearchTextFieldProps: {
+          placeholder: 'Pesquisar',
+        },
+        initialState: {
+          density: 'compact',
+          sorting: [{ id: 'dateLabel', desc: true }],
+        },
+        muiPaginationProps: {
+          rowsPerPageOptions: [10],
+        },
     });
     
     return (
         <Container>
             <TitlePage>Transações</TitlePage>
+            {/* <Box display="flex" flexDirection="column" alignItems="center">
+            <h3>{formattedDate}</h3>
+      <DatePicker
+        views={['year', 'month']}
+        label="Selecione o mês/ano"
+        value={selectedDate}
+        onChange={handleDateChange}
+        renderInput={(params) => <TextField {...params} helperText={null} />}
+      />
+    </Box> */}
             <ContainerTable>
-            <MaterialReactTable table={table} />
+            <MaterialReactTable 
+              table={table} 
+            />
             </ContainerTable>
         </Container>
     )

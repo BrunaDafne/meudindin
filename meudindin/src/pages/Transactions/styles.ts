@@ -20,7 +20,8 @@ export const TitlePage = styled.p`
 export const ContainerTable = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75vh;
+  max-height: 78vh;
   max-width: 78vw;
-  background-color: pink;
+  overflow: auto;
+  justify-content: flex-start;
 `;
