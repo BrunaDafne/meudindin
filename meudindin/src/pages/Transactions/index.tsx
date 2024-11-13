@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Container, ContainerTable, TitlePage } from "./styles";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { format } from "date-fns";
 import { keyBy, mapValues } from "lodash";
 import { Categories } from "../../constants/categories";
@@ -11,6 +11,8 @@ import {
     useMaterialReactTable,
     type MRT_ColumnDef,
   } from 'material-react-table';
+import { Box } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 export function Transactions() {
     const {transactions} = useSelector((state: RootState) => state.transactions);
@@ -95,19 +97,27 @@ export function Transactions() {
         },
     });
     
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    console.log('selectedDate: ', selectedDate);
+
+    const handleDateChange = (date: Date | null) => {
+      setSelectedDate(date);
+      // Aqui você pode adicionar a lógica para filtrar transações com base no mês e ano selecionados
+    };
+
+
     return (
         <Container>
             <TitlePage>Transações</TitlePage>
-            {/* <Box display="flex" flexDirection="column" alignItems="center">
-            <h3>{formattedDate}</h3>
-      <DatePicker
-        views={['year', 'month']}
-        label="Selecione o mês/ano"
-        value={selectedDate}
-        onChange={handleDateChange}
-        renderInput={(params) => <TextField {...params} helperText={null} />}
-      />
-    </Box> */}
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <DatePicker
+              views={['year', 'month']}
+              label="Selecione o mês/ano"
+              value={selectedDate}
+              onChange={handleDateChange}
+              //renderInput={(params) => <TextField {...params} helperText={null} />}
+            />
+          </Box>
             <ContainerTable>
             <MaterialReactTable 
               table={table} 
