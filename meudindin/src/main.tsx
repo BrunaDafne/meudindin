@@ -14,6 +14,7 @@ import { ptBR } from 'date-fns/locale';
 import { Provider } from 'react-redux';
 import { persistor, store } from './app/store.ts';
 import { PersistGate } from 'redux-persist/integration/react';
+import Budget from './pages/Budget/index.tsx';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "transactions", element: <Transactions /> },
+          { path: "budget", element: <Budget /> }
           // Adicione outras páginas aqui
         ],
       },

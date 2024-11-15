@@ -15,14 +15,14 @@ const routes = [
         icon: 'line-md:arrows-vertical',
     },
     {
+        title: 'Orçamentos',
+        path: '/budget',
+        icon: 'line-md:alert',
+    },
+    {
         title: 'Relatórios',
         path: '/transactions',
         icon: 'line-md:clipboard-check-twotone',
-    },
-    {
-        title: 'Orçamentos',
-        path: '/transactions',
-        icon: 'line-md:alert',
     },
     {
         title: 'Carteiras',

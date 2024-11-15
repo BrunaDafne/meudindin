@@ -1,4 +1,4 @@
-import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitlePage, TitlePage, icone } from "./styles";
+import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitleCard, SubtitlePage, TitlePage, icone } from "./styles";
 import { CardValues, TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
@@ -9,12 +9,15 @@ import { Modal } from "../../components/Modal";
 import { ModalDespesa } from "../../components/ModalDespesa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { Box } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
-export default function Dashboard() {
+export default function Budget() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
     const {receita, despesa, name} = useSelector((state: RootState) => state.user);
     const {wallets} = useSelector((state: RootState) => state.wallets);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     const orcamentos = [
         {
@@ -52,15 +55,15 @@ export default function Dashboard() {
     const valuesGraphic = [
         {
             categoria: 'Educação',
-            porcentagem: 25,
+            porcentagem: 4,
         },
         {
             categoria: 'Alimentação',
-            porcentagem: 35,
+            porcentagem: 2,
         },
         {
             categoria: 'Lazer',
-            porcentagem: 25,
+            porcentagem: 5,
         },
     ]
 
@@ -72,55 +75,48 @@ export default function Dashboard() {
         setModalDespesaOpen((prevState) => !prevState)
     }
 
+    const handleDateChange = (date: Date | null) => {
+        setSelectedDate(date);
+    };
+
     return (
         <Container>
             <ContainerTitle>
-                <TitlePage>Bem vindo(a), {name}</TitlePage>
+                <TitlePage>Orçamentos</TitlePage>
             </ContainerTitle>
-            <ContainerCard>
-            <ContainerCardItem>
-            <CardValues title="Receita mensal" subtitle={`R$ ${receita}`} type={TypeCard.success}/>
-            </ContainerCardItem>
-            <ContainerCardItem>
-            <CardValues title="Despesa mensal" subtitle={`R$ ${despesa}`} type={TypeCard.error}/>
-            </ContainerCardItem>
-            <ContainerCardItem height="60%">
-                <Button title="Adicionar receita" type={TypeCard.success} action={() => handleModal()}/>
-            </ContainerCardItem>
-            <ContainerCardItem height="60%">
-                <Button title="Adicionar despesa" type={TypeCard.error} action={() => handleModalDespesa()} />
-            </ContainerCardItem>
-            </ContainerCard>
+            <Box display="flex" flexDirection="column" alignItems="center" sx={{marginBottom: 1}}>
+              <DatePicker
+              views={['year', 'month']}
+              label="Selecione o mês/ano"
+              value={selectedDate}
+              onChange={handleDateChange}
+              sx={{
+                '& .MuiInputBase-root': {
+                  height: 40, 
+                },
+                '& .MuiFormLabel-root': {
+                },
+              }}
+            />
+          </Box>
             <Modal isOpen={isModalOpen} onClose={handleModal} title="Adicionar receita"/>
             <ModalDespesa isOpen={isModalDespesaOpen} onClose={handleModalDespesa} title="Adicionar despesa"/>
 
             <ContainerGraphics>
             <ContainerGraphicsItem>
-            <SubtitlePage>Gastos do mês</SubtitlePage> 
+            <SubtitlePage>Orçamentos mais excedidos</SubtitlePage> 
+            <SubtitleCard>Nos últimos 6 meses</SubtitleCard> 
             <ContainerSection>
             <GraphicBar data={valuesGraphic} nomeValor={['porcentagem']} indexLabelHorizontal={'categoria'} legendaVertical='Porcentagem' legendaHorizontal="Categoria"/>
             </ContainerSection>  
             </ContainerGraphicsItem>
-            <ContainerGraphicsItem>
-            <SubtitlePage>Próximas despesas</SubtitlePage>
-            <ContainerSection>
+            <ContainerGraphicsItem width="50vw">
+            <SubtitlePage>Orçamentos por categoria</SubtitlePage>
+            <SubtitleCard>Nos últimos 6 meses</SubtitleCard>
+            <ContainerSection width="50vw">
                 <ContainerButtonCostNext>
                 <ButtonMoney title='Fatura Novembro 2024' value="R$ 350,00" subtitle="Cartão Nubank - 20/08"/>
                 </ContainerButtonCostNext>
-            </ContainerSection>  
-            </ContainerGraphicsItem>
-            <ContainerGraphicsItem>
-            <SubtitlePage>Saldos</SubtitlePage>
-            <ContainerSection>
-                {
-                    wallets.map(({id, title, value}) => {
-                        return (
-                        <ContainerButtonCostNext key={`${id}+${title}`}>
-                            <ButtonMoney title={title} value={`R$ ${value}`} />
-                        </ContainerButtonCostNext>  
-                        )
-                    })
-                }
             </ContainerSection>  
             </ContainerGraphicsItem>
             </ContainerGraphics>
