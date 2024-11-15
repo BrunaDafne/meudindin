@@ -8,7 +8,6 @@ export const Container = styled.div`
   justify-content: space-between;
   height: 88vh;
   max-width: 78vw;
-  background-color: yellow;
 `;
 
 export const TitlePage = styled.p`
@@ -20,7 +19,7 @@ export const TitlePage = styled.p`
 export const ContainerTable = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 78vh;
+  min-height: 75vh;
   max-width: 78vw;
   overflow: auto;
   justify-content: flex-start;

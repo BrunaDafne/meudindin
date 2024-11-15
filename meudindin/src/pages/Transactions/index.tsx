@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Container, ContainerTable, TitlePage } from "./styles";
 import { useMemo, useState } from "react";
-import { format } from "date-fns";
+import { format, isSameMonth, isSameYear } from "date-fns";
 import { keyBy, mapValues } from "lodash";
 import { Categories } from "../../constants/categories";
 import { TypeTransactions } from "../../constants/typeTransactions";
@@ -17,7 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 export function Transactions() {
     const {transactions} = useSelector((state: RootState) => state.transactions);
     const {wallets} = useSelector((state: RootState) => state.wallets);
-    console.log('transactions na TELA DE TRANSACOES: ', transactions);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     type TransacoesListagem = {
         title: string;
@@ -32,18 +32,22 @@ export function Transactions() {
     const transacoes: TransacoesListagem[] = useMemo(() => {
         const carteiras = mapValues(keyBy(wallets, 'id'), 'title');
 
-        return transactions.map((data) => {
-            return {
-                title: data.title ? data.title : '',
-                value: data.value,
-                dateLabel: format(data.date, "dd/MM/yyyy"),
-                date: data.date,
-                type: TypeTransactions[data.id_type],
-                category: Categories[data.id_category],
-                wallet: data?.id_wallet ? carteiras[data?.id_wallet] : '',
+        return transactions.reduce((acc, item) => {
+          if (isSameMonth(item.date, selectedDate) && isSameYear(item.date, selectedDate)) {
+            const itemFormatado = {
+                title: item.title ? item.title : '',
+                value: item.value,
+                dateLabel: format(item.date, "dd/MM/yyyy"),
+                date: item.date,
+                type: TypeTransactions[item.id_type],
+                category: Categories[item.id_category],
+                wallet: item?.id_wallet ? carteiras[item?.id_wallet] : '',
             };
-        })
-    }, [transactions, wallets]);
+            acc.push(itemFormatado);
+          }
+          return acc;
+        }, [] as TransacoesListagem[]);
+    }, [transactions, wallets, selectedDate]);
 
     const columns = useMemo<MRT_ColumnDef<TransacoesListagem>[]>(
         () => [
@@ -96,26 +100,27 @@ export function Transactions() {
           rowsPerPageOptions: [10],
         },
     });
-    
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-    console.log('selectedDate: ', selectedDate);
 
     const handleDateChange = (date: Date | null) => {
       setSelectedDate(date);
-      // Aqui você pode adicionar a lógica para filtrar transações com base no mês e ano selecionados
     };
-
 
     return (
         <Container>
             <TitlePage>Transações</TitlePage>
-            <Box display="flex" flexDirection="column" alignItems="center">
+            <Box display="flex" flexDirection="column" alignItems="center" sx={{marginBottom: 1}}>
               <DatePicker
               views={['year', 'month']}
               label="Selecione o mês/ano"
               value={selectedDate}
               onChange={handleDateChange}
-              //renderInput={(params) => <TextField {...params} helperText={null} />}
+              sx={{
+                '& .MuiInputBase-root': {
+                  height: 40, 
+                },
+                '& .MuiFormLabel-root': {
+                },
+              }}
             />
           </Box>
             <ContainerTable>
