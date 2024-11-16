@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
 import transactionsReducer from '../features/transactionsSlice';
 import walletReducer from '../features/walletSlice';
+import budgetsReducer from '../features/budgetSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Usando localStorage como persistência
 
@@ -30,11 +31,19 @@ const walletsPersistConfig = {
 
 const persistedWalletReducer = persistReducer(walletsPersistConfig, walletReducer);
 
+const budgetsPersistConfig = {
+  key: 'budgets',
+  storage,
+};
+
+const persistedBudgetsReducer = persistReducer(budgetsPersistConfig, budgetsReducer);
+
 export const store = configureStore({
   reducer: {
     user: persistedUserReducer,
     transactions: persistedTransactionsReducer,
     wallets: persistedWalletReducer,
+    budgets: persistedBudgetsReducer,
   },
 });
 

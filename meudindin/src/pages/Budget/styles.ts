@@ -47,6 +47,7 @@ export const ContainerCardItem = styled.div<ContainerHeaderItem>`
   align-items: center;
   min-width: 18vw;
   height: ${({height}) => height ? height : '100%'};
+  margin-left: 20px;
 `;
 
 export const ContainerGraphics = styled.div`
@@ -68,10 +69,29 @@ export const ContainerGraphicsItem = styled.div<ContainerHeaderItem>`
   height: ${({height}) => height ? height : '100%'};
 `;
 
+export const ContainerBudgetsTitle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const SubtitlePage = styled.p`
     color: ${colors.text};
     font-size: 20px;
     font-weight: 600;
+`;
+
+export const SubtitleBudget = styled.p`
+    color: ${colors.textGray};
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 15px;
+    text-decoration: underline;
+
+    &:hover{
+      color: ${colors.text};
+    }
 `;
 
 export const SubtitleCard = styled.p`

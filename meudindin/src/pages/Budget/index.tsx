@@ -1,56 +1,54 @@
-import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitleCard, SubtitlePage, TitlePage, icone } from "./styles";
-import { CardValues, TypeCard } from "../../components/CardValues";
+import { Container, ContainerBudgets, ContainerBudgetsTitle, ContainerButtonCostNext, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitleBudget, SubtitleCard, SubtitlePage, TitlePage, icone } from "./styles";
+import { TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
 import { CardBudgets } from "../../components/CardBudgets";
 import { GraphicBar } from "../../components/Graphic";
-import { useState } from "react";
-import { Modal } from "../../components/Modal";
-import { ModalDespesa } from "../../components/ModalDespesa";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Box } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { ModalBudget } from "../../components/ModalBudget";
+import { ModalBudgetList } from "../../components/ModalBudgetList";
+import { Categories } from "../../constants/categories";
+import { Budget as BudgetType } from "../../features/budgetSlice";
+
+export interface OrcamentoCard extends BudgetType{
+    value: number;
+    name_category: string;
+}
 
 export default function Budget() {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
-    const {receita, despesa, name} = useSelector((state: RootState) => state.user);
-    const {wallets} = useSelector((state: RootState) => state.wallets);
+    const {budgets} = useSelector((state: RootState) => state.budgets);
+    const [categoriasCard, setCategoriasCard] = useState<OrcamentoCard[]>();
+    const [mostrarOrcamentos, setMostrarOrcamentos] = useState<OrcamentoCard[]>();
+    const [modalBudget, setModalBudget] = useState(false);
+
+    console.log('categoriasCard: ', categoriasCard);
+    console.log('mostrarOrcamentos: ', mostrarOrcamentos);
+
+    const {transactions} = useSelector((state: RootState) => state.transactions);
+
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-    const orcamentos = [
-        {
-            title: 'Educação',
-            goalValue: 50,
-            expenseValue: 35,
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 100,
-            expenseValue: 150,
-        },
-        {
-            title: 'Lazer',
-            goalValue: 80,
-            expenseValue: 40,
-        },
-        {
-            title: 'Assinaturas',
-            goalValue: 70,
-            expenseValue: 50,
-        },
-        {
-            title: 'Impostos',
-            goalValue: 80,
-            expenseValue: 15,
-        },
-        {
-            title: 'Casa',
-            goalValue: 200,
-            expenseValue: 97,
-        },
-    ];
+
+    useEffect(() => {
+        // Agrupa as transações por id_category e soma os valores
+        const categorySums = transactions.reduce((acc, transaction) => {
+            acc[transaction.id_category] = (acc[transaction.id_category] || 0) + transaction.value;
+            return acc;
+        }, {} as Record<number, number>);
+        
+        const orcamentosFormatados: OrcamentoCard[] = budgets.map(budget => ({
+            ...budget,
+            value: categorySums[budget.id_category] || 0, // Adiciona 0 caso não tenha transações
+            name_category: Categories[budget.id_category],
+        }));
+        setCategoriasCard(orcamentosFormatados);
+        setMostrarOrcamentos(orcamentosFormatados?.slice(0, 6))
+    }, [budgets]);
 
     const valuesGraphic = [
         {
@@ -71,8 +69,8 @@ export default function Budget() {
         setModalOpen((prevState) => !prevState)
     }
 
-    function handleModalDespesa() {
-        setModalDespesaOpen((prevState) => !prevState)
+    function handleModalBudget() {
+        setModalBudget((prevState) => !prevState)
     }
 
     const handleDateChange = (date: Date | null) => {
@@ -84,7 +82,7 @@ export default function Budget() {
             <ContainerTitle>
                 <TitlePage>Orçamentos</TitlePage>
             </ContainerTitle>
-            <Box display="flex" flexDirection="column" alignItems="center" sx={{marginBottom: 1}}>
+            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" sx={{marginBottom: 1}}>
               <DatePicker
               views={['year', 'month']}
               label="Selecione o mês/ano"
@@ -98,10 +96,12 @@ export default function Budget() {
                 },
               }}
             />
+            <ContainerCardItem height="100%">
+                <Button title="Adicionar orçamento" type={TypeCard.success} action={() => handleModal()}/>
+            </ContainerCardItem>
           </Box>
-            <Modal isOpen={isModalOpen} onClose={handleModal} title="Adicionar receita"/>
-            <ModalDespesa isOpen={isModalDespesaOpen} onClose={handleModalDespesa} title="Adicionar despesa"/>
-
+            <ModalBudget isOpen={isModalOpen} onClose={handleModal} title="Adicionar orçamento"/>
+            <ModalBudgetList isOpen={modalBudget} onClose={handleModalBudget} title="Orçamentos" budgetsParams={categoriasCard}/>
             <ContainerGraphics>
             <ContainerGraphicsItem>
             <SubtitlePage>Orçamentos mais excedidos</SubtitlePage> 
@@ -121,13 +121,18 @@ export default function Budget() {
             </ContainerGraphicsItem>
             </ContainerGraphics>
             <ContainerBudgets>
+            <ContainerBudgetsTitle>
             <SubtitlePage>Orçamentos</SubtitlePage>
+            {categoriasCard && categoriasCard?.length > 6 && 
+                <SubtitleBudget onClick={() => handleModalBudget()}>VER TODOS</SubtitleBudget>
+            }
+            </ContainerBudgetsTitle>
             <ContainerCardsBudgets>
                 {
-                    orcamentos.map(({title, goalValue, expenseValue}) => {
+                    mostrarOrcamentos?.map(({name_category, limit, value}) => {
                         return (
                         <SectionCardBudgets>
-                            <CardBudgets title={title} goalValue={goalValue} expenseValue={expenseValue} />
+                            <CardBudgets title={name_category} goalValue={limit} expenseValue={value} />
                         </SectionCardBudgets>
                         )
                     })
