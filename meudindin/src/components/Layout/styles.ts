@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { colors } from "../../styles/colors";
 
+interface Button {
+  marginTop?: string;
+}
+
 export const Container = styled.div`
   display: flex;
   flex: 1;
@@ -12,23 +16,30 @@ export const Container = styled.div`
 export const Sidebar = styled.div`
   display: flex;
   height: 100vh;
+  
   width: 15vw;
   background-color: ${colors.background};
+  //background-color: black;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+`;
+
+export const LogoImg = styled.img`
+  margin-bottom: 30px;
 `;
 
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
-  height: 50%;
+  height: 40%;
   background-color: ${colors.background};
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
-export const ButtonMenu = styled.button`
+export const ButtonMenu = styled.button<Button>`
   width: 100%;
   height: 6vh;
   background-color: transparent;
@@ -38,7 +49,7 @@ export const ButtonMenu = styled.button`
   border-radius: 5px;
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
+  margin-top: ${({marginTop}) => marginTop ? marginTop : '5px'};
   transition: all 0.3s ease;
 
   &:hover {

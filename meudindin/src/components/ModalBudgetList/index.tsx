@@ -1,7 +1,7 @@
-import { Button, CloseButton, ContainerButton, ContainerTable, LabelButton, ModalContent, ModalOverlay, TitleModal } from "./styles";
+import { CloseButton, ContainerTable, LabelButton, ModalContent, ModalOverlay, TitleModal } from "./styles";
 import { useMemo, useState } from "react";
 import { Alert, Box, IconButton, Snackbar, Tooltip } from "@mui/material";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -9,9 +9,9 @@ import {
   type MRT_ColumnDef,
 } from 'material-react-table';
 import { OrcamentoCard } from "../../pages/Budget";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { removeBudget, setBudgets } from "../../features/budgetSlice";
+import { setBudgets } from "../../features/budgetSlice";
 
 interface ModalProps {
     isOpen: boolean;
@@ -24,21 +24,17 @@ export function ModalBudgetList({ isOpen, onClose, title, budgetsParams }: Modal
     if (!isOpen) return null;
     console.log('orçamentos listagem passados por parametro: ', budgetsParams);
     const [openModal, setOpenModal] = useState(false);
-    const {id} = useSelector((state: RootState) => state.user);
     const [message, setMessage] = useState('');
     const [typeAlert, setTypeAlert] = useState<'success' | 'error'>('success');
     const {budgets} = useSelector((state: RootState) => state.budgets);
     console.log('listagem de orçamentos STORE: ', budgets);
-
-    const orcamentos: OrcamentoCard[] | undefined = useMemo(() => {
-      return budgetsParams;
-  }, []);
+    const [orcamentos, setOrcamentos] = useState(budgetsParams);
+    const dispatch = useDispatch<AppDispatch>();
 
   function deleteBudget(idDelete: number) {
-    console.log('id apagar: ', idDelete);
-    // const listagem = budgets?.filter(({id}) => id !== idDelete);
-    // console.log('listagemmmmm filtrada: ', listagem);
-    removeBudget(idDelete);
+    const orcamentosFiltrados = orcamentos?.filter(({id}) => id !== idDelete);
+    setOrcamentos(orcamentosFiltrados);
+    dispatch(setBudgets(orcamentosFiltrados));
   }
 
   // Deletar

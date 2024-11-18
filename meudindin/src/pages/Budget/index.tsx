@@ -13,6 +13,7 @@ import { ModalBudget } from "../../components/ModalBudget";
 import { ModalBudgetList } from "../../components/ModalBudgetList";
 import { Categories } from "../../constants/categories";
 import { Budget as BudgetType } from "../../features/budgetSlice";
+import { TypeTransactions } from "../../constants/typeTransactions";
 
 export interface OrcamentoCard extends BudgetType{
     value: number;
@@ -35,11 +36,12 @@ export default function Budget() {
 
 
     useEffect(() => {
-        // Agrupa as transações por id_category e soma os valores
         const categorySums = transactions.reduce((acc, transaction) => {
-            acc[transaction.id_category] = (acc[transaction.id_category] || 0) + transaction.value;
+            if (transaction.id_type === TypeTransactions.Despesa) {
+              acc[transaction.id_category] = (acc[transaction.id_category] || 0) + transaction.value;
+            }
             return acc;
-        }, {} as Record<number, number>);
+          }, {} as Record<number, number>);
         
         const orcamentosFormatados: OrcamentoCard[] = budgets.map(budget => ({
             ...budget,
@@ -84,6 +86,7 @@ export default function Budget() {
             </ContainerTitle>
             <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" sx={{marginBottom: 1}}>
               <DatePicker
+              disabled
               views={['year', 'month']}
               label="Selecione o mês/ano"
               value={selectedDate}
@@ -110,7 +113,7 @@ export default function Budget() {
             <GraphicBar data={valuesGraphic} nomeValor={['porcentagem']} indexLabelHorizontal={'categoria'} legendaVertical='Porcentagem' legendaHorizontal="Categoria"/>
             </ContainerSection>  
             </ContainerGraphicsItem>
-            <ContainerGraphicsItem width="50vw">
+            <ContainerGraphicsItem>
             <SubtitlePage>Orçamentos por categoria</SubtitlePage>
             <SubtitleCard>Nos últimos 6 meses</SubtitleCard>
             <ContainerSection width="50vw">

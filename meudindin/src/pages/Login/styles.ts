@@ -13,7 +13,7 @@ export const Container = styled.div`
 
 export const Card = styled.div`
     display: flex;
-    height: 70vh;  
+    height: 80vh;  
     width: 30vw;   
     background-color: ${colors.backgroundSecondary};
     border-radius: 20px;
@@ -21,6 +21,10 @@ export const Card = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+`;
+
+export const Logo = styled.img`
+    margin-bottom: 20px;
 `;
 
 export const Title = styled.h3`

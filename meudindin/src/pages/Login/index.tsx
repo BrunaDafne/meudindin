@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Button, Card, Container, ContainerInput, Input, LabelButton, LabelError, LabelInput, SublabelButton, Title } from "./styles";
+import { Button, Card, Container, ContainerInput, Input, LabelButton, LabelError, LabelInput, Logo, SublabelButton, Title } from "./styles";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import logoestagio from '../../assets/logoestagio2.png';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -30,6 +31,7 @@ export default function Login() {
     return (
         <Container>
             <Card>
+                <Logo src={logoestagio} width={90} height={90} />
                 <Title>Entrar</Title>
                 <ContainerInput>
                 <LabelInput>Email*</LabelInput>

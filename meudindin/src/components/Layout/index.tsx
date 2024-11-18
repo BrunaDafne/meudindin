@@ -1,7 +1,8 @@
 // AuthLayout.tsx
 import { Outlet, useNavigate } from "react-router-dom";
-import { ButtonLabelMenu, ButtonMenu, Container, ContainerPages, Content, Menu, Sidebar } from "./styles";
+import { ButtonLabelMenu, ButtonMenu, Container, ContainerPages, Content, LogoImg, Menu, Sidebar } from "./styles";
 import { Icon } from '@iconify/react';
+import logoestagio from '../../assets/logoestagio2.png';
 
 const routes = [
     {
@@ -19,21 +20,16 @@ const routes = [
         path: '/budget',
         icon: 'line-md:alert',
     },
-    {
-        title: 'Relatórios',
-        path: '/transactions',
-        icon: 'line-md:clipboard-check-twotone',
-    },
-    {
-        title: 'Carteiras',
-        path: '/transactions',
-        icon: 'ant-design:wallet-twotone',
-    },
-    {
-        title: 'Cartões',
-        path: '/transactions',
-        icon: 'ant-design:credit-card-outlined',
-    },
+    // {
+    //     title: 'Relatórios',
+    //     path: '/transactions',
+    //     icon: 'line-md:clipboard-check-twotone',
+    // },
+    // {
+    //     title: 'Carteiras',
+    //     path: '/transactions',
+    //     icon: 'ant-design:wallet-twotone',
+    // },
 ];
 
 export function Layout() {
@@ -42,11 +38,14 @@ export function Layout() {
   return (
     <Container>
       <Sidebar>
+        <LogoImg src={logoestagio} width={90} height={90} />
         <Menu>
             {
                 routes.map(({title, path, icon}) => {
                     return (
-                        <ButtonMenu onClick={() => navigate(path)}>
+                        <ButtonMenu onClick={() => {
+                            navigate(path)
+                            }}>
                             <Icon icon={icon} width="20" height="20" 
                             style={{marginRight: 10}}
                             />
@@ -55,6 +54,16 @@ export function Layout() {
                     )
                 })
             }
+            <ButtonMenu marginTop='50px' onClick={() => { 
+                                localStorage.removeItem('token');
+                                navigate('/');
+                                return;
+                            }}>
+                            <Icon icon={'line-md:logout'} width="20" height="20" 
+                            style={{marginRight: 10}}
+                            />
+                            <ButtonLabelMenu>Sair</ButtonLabelMenu>
+                        </ButtonMenu>
         </Menu>
       </Sidebar>
       <Content>

@@ -4,50 +4,39 @@ import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
 import { CardBudgets } from "../../components/CardBudgets";
 import { GraphicBar } from "../../components/Graphic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
 import { ModalDespesa } from "../../components/ModalDespesa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { OrcamentoCard } from "../Budget";
+import { Categories } from "../../constants/categories";
+import { TypeTransactions } from "../../constants/typeTransactions";
 
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isModalDespesaOpen, setModalDespesaOpen] = useState(false);
     const {receita, despesa, name} = useSelector((state: RootState) => state.user);
     const {wallets} = useSelector((state: RootState) => state.wallets);
+    const {budgets} = useSelector((state: RootState) => state.budgets);
+    const {transactions} = useSelector((state: RootState) => state.transactions);
+    const [mostrarOrcamentos, setMostrarOrcamentos] = useState<OrcamentoCard[]>();
 
-    const orcamentos = [
-        {
-            title: 'Educação',
-            goalValue: 50,
-            expenseValue: 35,
-        },
-        {
-            title: 'Entreternimento',
-            goalValue: 100,
-            expenseValue: 150,
-        },
-        {
-            title: 'Lazer',
-            goalValue: 80,
-            expenseValue: 40,
-        },
-        {
-            title: 'Assinaturas',
-            goalValue: 70,
-            expenseValue: 50,
-        },
-        {
-            title: 'Impostos',
-            goalValue: 80,
-            expenseValue: 15,
-        },
-        {
-            title: 'Casa',
-            goalValue: 200,
-            expenseValue: 97,
-        },
-    ];
+    useEffect(() => {
+        const categorySums = transactions.reduce((acc, transaction) => {
+            if (transaction.id_type === TypeTransactions.Despesa) {
+              acc[transaction.id_category] = (acc[transaction.id_category] || 0) + transaction.value;
+            }
+            return acc;
+          }, {} as Record<number, number>);
+        
+        const orcamentosFormatados: OrcamentoCard[] = budgets.map(budget => ({
+            ...budget,
+            value: categorySums[budget.id_category] || 0, // Adiciona 0 caso não tenha transações
+            name_category: Categories[budget.id_category],
+        }));
+        setMostrarOrcamentos(orcamentosFormatados?.slice(0, 6))
+    }, [budgets]);
 
     const valuesGraphic = [
         {
@@ -128,10 +117,10 @@ export default function Dashboard() {
             <SubtitlePage>Orçamentos</SubtitlePage>
             <ContainerCardsBudgets>
                 {
-                    orcamentos.map(({title, goalValue, expenseValue}) => {
+                    mostrarOrcamentos?.map(({name_category, limit, value}) => {
                         return (
                         <SectionCardBudgets>
-                            <CardBudgets title={title} goalValue={goalValue} expenseValue={expenseValue} />
+                            <CardBudgets title={name_category} goalValue={limit} expenseValue={value} />
                         </SectionCardBudgets>
                         )
                     })
