@@ -109,7 +109,7 @@ export const ContainerSection = styled.div<ContainerHeaderItem>`
   padding-top: 15px;
   background-color: ${colors.backgroundGray};
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
-  min-width: ${({width}) => width ? width : '25vw'};
+  min-width: ${({width}) => width ? width : '35vw'};
   //background-color: red;
   height: ${({height}) => height ? height : '88%'};
 `;
