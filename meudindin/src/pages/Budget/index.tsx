@@ -1,7 +1,6 @@
 import { Container, ContainerBudgets, ContainerBudgetsTitle, ContainerButtonCostNext, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitleBudget, SubtitleCard, SubtitlePage, TitlePage, icone } from "./styles";
 import { TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
-import { ButtonMoney } from "../../components/ButtonMoney";
 import { CardBudgets } from "../../components/CardBudgets";
 import { GraphicBar } from "../../components/Graphic";
 import { useEffect, useState } from "react";

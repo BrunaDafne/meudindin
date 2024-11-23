@@ -1,7 +1,7 @@
 // src/features/transactionsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Wallet {
+export interface Wallet {
   id: number;
   id_user: number;
   title: string;

@@ -1,4 +1,4 @@
-import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, SectionCardBudgets, SubtitlePage, TitlePage, icone } from "./styles";
+import { Container, ContainerBudgets, ContainerButtonCostNext, ContainerCard, ContainerCardItem, ContainerCardsBudgets, ContainerGraphics, ContainerGraphicsItem, ContainerSection, ContainerTitle, ContainerTitleBalance, SectionCardBudgets, SubtitleBalace, SubtitlePage, TitlePage, icone } from "./styles";
 import { CardValues, TypeCard } from "../../components/CardValues";
 import { Button } from "../../components/Button";
 import { ButtonMoney } from "../../components/ButtonMoney";
@@ -15,6 +15,7 @@ import { TypeTransactions } from "../../constants/typeTransactions";
 import { Transaction } from "../../features/transactionsSlice";
 import { isSameMonth } from "date-fns";
 import { groupBy, map, orderBy } from "lodash";
+import { ModalBalanceList } from "../../components/ModalBalanceList";
 
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -25,6 +26,7 @@ export default function Dashboard() {
     const {transactions} = useSelector((state: RootState) => state.transactions);
     const [topCategories, setTopCategories] = useState<{ categoria: string; porcentagem: number }[]>([]);
     const [mostrarOrcamentos, setMostrarOrcamentos] = useState<OrcamentoCard[]>();
+    const [modalBalance, setModalBalance] = useState(false);
 
     useEffect(() => {
         const categorySums = transactions.reduce((acc, transaction) => {
@@ -48,6 +50,10 @@ export default function Dashboard() {
 
     function handleModalDespesa() {
         setModalDespesaOpen((prevState) => !prevState)
+    }
+
+    function handleModalBalance() {
+        setModalBalance((prevState) => !prevState)
     }
 
     // Função para obter as 3 categorias mais gastas do mês
@@ -129,7 +135,13 @@ export default function Dashboard() {
             </ContainerSection>  
             </ContainerGraphicsItem>
             <ContainerGraphicsItem>
+            <ContainerTitleBalance>
             <SubtitlePage>Saldos</SubtitlePage>
+            {
+                wallets?.length > 0 && 
+                <SubtitleBalace onClick={() => handleModalBalance()}>VER TODOS</SubtitleBalace>
+            }   
+            </ContainerTitleBalance>
             <ContainerSection>
                 {
                     wallets.map(({id, title, value}) => {
@@ -143,6 +155,7 @@ export default function Dashboard() {
             </ContainerSection>  
             </ContainerGraphicsItem>
             </ContainerGraphics>
+            <ModalBalanceList isOpen={modalBalance} title="Carteiras" onClose={() => handleModalBalance()}/>
             <ContainerBudgets>
             <SubtitlePage>Orçamentos</SubtitlePage>
             <ContainerCardsBudgets>

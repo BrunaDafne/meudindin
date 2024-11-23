@@ -45,3 +45,15 @@ export const bankingInstitutions = [
         code: '003'
     },
 ]
+
+export enum BankingInstitutions {
+    'Inter' = 1,
+    'Nubank',
+    'C6 Bank',
+    'Picpay',
+    'Banco do Brasil',
+    'Caixa',
+    'Bradesco',
+    'Itaú',
+    'Santander'
+}

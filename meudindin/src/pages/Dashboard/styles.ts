@@ -73,6 +73,25 @@ export const SubtitlePage = styled.p`
     font-weight: 600;
 `;
 
+export const ContainerTitleBalance = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const SubtitleBalace = styled.p`
+    color: ${colors.textGray};
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 15px;
+    text-decoration: underline;
+
+    &:hover{
+      color: ${colors.text};
+    }
+`;
+
 export const ContainerSection = styled.div<ContainerHeaderItem>`
   display: flex;
   flex-direction: column;
