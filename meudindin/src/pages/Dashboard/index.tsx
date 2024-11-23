@@ -12,6 +12,9 @@ import { RootState } from "../../app/store";
 import { OrcamentoCard } from "../Budget";
 import { Categories } from "../../constants/categories";
 import { TypeTransactions } from "../../constants/typeTransactions";
+import { Transaction } from "../../features/transactionsSlice";
+import { isSameMonth } from "date-fns";
+import { groupBy, map, orderBy } from "lodash";
 
 export default function Dashboard() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -20,6 +23,7 @@ export default function Dashboard() {
     const {wallets} = useSelector((state: RootState) => state.wallets);
     const {budgets} = useSelector((state: RootState) => state.budgets);
     const {transactions} = useSelector((state: RootState) => state.transactions);
+    const [topCategories, setTopCategories] = useState<{ categoria: string; porcentagem: number }[]>([]);
     const [mostrarOrcamentos, setMostrarOrcamentos] = useState<OrcamentoCard[]>();
 
     useEffect(() => {
@@ -38,21 +42,6 @@ export default function Dashboard() {
         setMostrarOrcamentos(orcamentosFormatados?.slice(0, 6))
     }, [budgets]);
 
-    const valuesGraphic = [
-        {
-            categoria: 'Educação',
-            porcentagem: 25,
-        },
-        {
-            categoria: 'Alimentação',
-            porcentagem: 35,
-        },
-        {
-            categoria: 'Lazer',
-            porcentagem: 25,
-        },
-    ]
-
     function handleModal() {
         setModalOpen((prevState) => !prevState)
     }
@@ -60,6 +49,47 @@ export default function Dashboard() {
     function handleModalDespesa() {
         setModalDespesaOpen((prevState) => !prevState)
     }
+
+    // Função para obter as 3 categorias mais gastas do mês
+    function getTopCategories(transactions: Transaction[]): { categoria: string; porcentagem: number }[] {
+    // Pegar o início e fim do mês atual
+    const now = new Date();
+  
+    // Filtrar transações que pertencem ao mês atual
+    const thisMonthTransactions = transactions.filter(
+      (transaction) => isSameMonth(transaction.date, now) && transaction.id_type === TypeTransactions['Despesa']
+    );
+  
+    // Agrupar as transações pelo campo `id_category`
+    const groupedByCategory = groupBy(thisMonthTransactions, 'id_category');
+  
+    // Somar os valores de cada categoria
+    const categoryTotals = map(groupedByCategory, (transactions, id_category) => {
+      const total = transactions.reduce((sum, transaction) => sum + transaction.value, 0);
+      return {
+        categoria: Categories[parseInt(id_category)], // Pegar o nome da categoria do enum
+        total,
+      };
+    });
+  
+    // Somar o valor total de todas as transações
+    const overallTotal = categoryTotals.reduce((sum, category) => sum + category.total, 0);
+  
+    // Calcular porcentagem e ordenar as categorias pelo total gasto
+    const withPercentages = categoryTotals.map((category) => ({
+      categoria: category.categoria,
+      porcentagem: parseFloat(((category.total / overallTotal) * 100).toFixed(2)), // Limitar a 2 casas decimais
+    }));
+  
+    // Ordenar as categorias por porcentagem e pegar as 3 primeiras
+    return orderBy(withPercentages, ['porcentagem'], ['desc']).slice(0, 3);
+  }
+
+  useEffect(() => {
+    if (transactions.length > 0) {
+        setTopCategories(getTopCategories(transactions));
+    }
+  }, [transactions]);
 
     return (
         <Container>
@@ -87,7 +117,7 @@ export default function Dashboard() {
             <ContainerGraphicsItem>
             <SubtitlePage>Gastos do mês</SubtitlePage> 
             <ContainerSection>
-            <GraphicBar data={valuesGraphic} nomeValor={['porcentagem']} indexLabelHorizontal={'categoria'} legendaVertical='Porcentagem' legendaHorizontal="Categoria"/>
+            <GraphicBar data={topCategories} nomeValor={['porcentagem']} indexLabelHorizontal={'categoria'} legendaVertical='Porcentagem' legendaHorizontal="Categoria"/>
             </ContainerSection>  
             </ContainerGraphicsItem>
             <ContainerGraphicsItem>
