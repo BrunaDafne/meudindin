@@ -1,15 +1,18 @@
 import { CloseButton, ContainerTable, ModalContent, ModalOverlay, TitleModal } from "./styles";
 import { useEffect, useMemo, useState } from "react";
-import { Alert, Snackbar } from "@mui/material";
-import { RootState } from "../../app/store";
+import { Alert, Box, IconButton, Snackbar, Tooltip } from "@mui/material";
+import { AppDispatch, RootState } from "../../app/store";
 import {
+  MRT_Row,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
-import { useSelector } from "react-redux";
-import { Wallet } from "../../features/walletSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Wallet, setWallets } from "../../features/walletSlice";
 import { BankingInstitutions } from "../../constants/bankingInstitutions";
+import { setValues } from "../../features/userSlice";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface ModalProps {
     isOpen: boolean;
@@ -28,6 +31,31 @@ export function ModalBalanceList({ isOpen, onClose, title }: ModalProps) {
     const [typeAlert, setTypeAlert] = useState<'success' | 'error'>('success');
     const {wallets} = useSelector((state: RootState) => state.wallets);
     const [carteiras, setCarteiras] = useState<Carteira[]>();
+    const {receita} = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
+
+    function deleteBalance(idDelete: number) {
+      const carteiraDeletar = carteiras?.find(({id}) => id === idDelete);
+      const carteirasFiltradas = carteiras?.filter(({id}) => id !== idDelete);
+
+      const storeWallets = wallets?.filter(({id}) => id !== idDelete);
+
+      if (receita && carteiraDeletar) {
+        const valoresAtualizar = {
+          receita: receita - carteiraDeletar?.value,
+        };
+        dispatch(setValues(valoresAtualizar));
+      }
+
+      setCarteiras(carteirasFiltradas);
+      dispatch(setWallets(storeWallets));
+    }
+
+    const openDeleteConfirmModal = (row: MRT_Row<Carteira>) => {
+      if (window.confirm('Deseja deletar essa carteira? ação não poderá ser desfeita')) {
+        deleteBalance(row.original.id);
+      }
+    };
 
   useEffect(() => {
     setCarteiras(wallets.map((wallet) => {
@@ -36,7 +64,7 @@ export function ModalBalanceList({ isOpen, onClose, title }: ModalProps) {
         banking: BankingInstitutions[wallet.id_banking_institution],
       }
     }));
-  }, []);
+  }, [wallets]);
 
   const columns = useMemo<MRT_ColumnDef<Carteira>[]>(
       () => [
@@ -44,7 +72,7 @@ export function ModalBalanceList({ isOpen, onClose, title }: ModalProps) {
           enableClickToCopy: true,
           accessorKey: 'title',
           header: 'Nome',
-          size: 200, 
+          size: 150, 
         },
         {
           enableClickToCopy: true,
@@ -65,6 +93,19 @@ export function ModalBalanceList({ isOpen, onClose, title }: ModalProps) {
     const table = useMaterialReactTable<Carteira>({
       columns,
       data: carteiras ? carteiras : [],
+      enableRowActions: true,
+      positionActionsColumn: 'last',
+      renderRowActions: ({ row }) => (
+        <Box sx={{ display: 'flex', gap: '1rem' }}>
+          <Tooltip title="Apagar">
+            <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+              <Icon icon={'line-md:close-circle-filled'} width="20" height="20" 
+                            style={{marginRight: 10}}
+                            />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
       muiSearchTextFieldProps: {
         placeholder: 'Pesquisar',
       },
