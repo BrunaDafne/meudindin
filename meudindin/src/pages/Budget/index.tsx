@@ -30,9 +30,6 @@ export default function Budget() {
     const [mostrarOrcamentos, setMostrarOrcamentos] = useState<OrcamentoCard[]>();
     const [modalBudget, setModalBudget] = useState(false);
 
-    console.log('categoriasCard: ', categoriasCard);
-    console.log('mostrarOrcamentos: ', mostrarOrcamentos);
-
     const {transactions} = useSelector((state: RootState) => state.transactions);
 
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
